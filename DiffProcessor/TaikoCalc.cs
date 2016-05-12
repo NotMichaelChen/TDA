@@ -188,6 +188,18 @@ namespace DiffProcessor
         {
             Note[] noteslist = GetAllNotes();
 
+            //Shift the notes around if DT or HT are active
+            if(((int)mods & (int)Modifiers.DoubleTime) > 0 || ((int)mods & (int)Modifiers.Nightcore) > 0)
+            {
+                foreach(Note i in noteslist)
+                    i.Time = (int)(i.Time / 1.5);
+            }
+            else if(((int)mods & (int)Modifiers.HalfTime) > 0)
+            {
+                foreach(Note i in noteslist)
+                    i.Time = (int)(i.Time / 0.75);
+            }
+
             //Notes Per Section (not seconds)
             List<int> nps = new List<int>();
 
