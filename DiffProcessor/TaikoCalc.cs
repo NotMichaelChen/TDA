@@ -224,15 +224,18 @@ namespace DiffProcessor
 
             nps.Sort();
 
-            int topten = nps.Count / 10;
+            //Allows a selection of a top percentile of note densities eg. choose top 10%, top 50%,
+            //or choose all 100%
+            double percentile = 1;
+            int percentilecount = (int)(nps.Count * percentile);
 
             double sum = 0;
-            for(int i = nps.Count - 1; i >= nps.Count-topten; i--)
+            for(int i = nps.Count - 1; i >= nps.Count-percentilecount; i--)
             {
                 sum += nps[i];
             }
 
-            return sum/topten;
+            return sum/percentilecount;
         }
 
         //Gets a list of notes to be used when calculating NPT
