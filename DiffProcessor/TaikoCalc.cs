@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using BeatmapInfo;
 using HitObjectInterpreter;
+using Structures;
 
 namespace DiffProcessor
 {
@@ -185,7 +186,7 @@ namespace DiffProcessor
         //NPHS = Notes Per Time (ms)
         private double GetNPT(int ms)
         {
-            HitObjectListParser hitobjects = new HitObjectListParser(map);
+            Note[] noteslist = GetAllNotes();
 
             //Notes Per Section (not seconds)
             List<int> nps = new List<int>();
@@ -224,6 +225,28 @@ namespace DiffProcessor
             }
 
             return sum/topten;
+        }
+
+        //Gets a list of notes to be used when calculating NPT
+        private Note[] GetAllNotes()
+        {
+            HitObjectListParser hitobjects = new HitObjectListParser(map);
+            List<Note> notes = new List<Note>();
+
+            for(int i = 0; i < hitobjects.GetSize(); i++)
+            {
+                //Only consider circles
+                if(hitobjects.GetHitObjectType(i) == HitObjectType.Circle)
+                {
+                    string hitsound = hitobjects.GetProperty(i, "hitsound");
+                    int time = Convert.ToInt32(hitobjects.GetProperty(i, "time"));
+
+                    Note current = new Note(hitsound, time);
+                    notes.Add(current);
+                }
+            }
+
+            return notes.ToArray();
         }
     }
 }
