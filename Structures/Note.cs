@@ -31,6 +31,7 @@ namespace Structures
         public int Time
         {
             get { return time; }
+            set { time = value; }
         }
 
         private NoteType GetNoteType(string hitsound)
