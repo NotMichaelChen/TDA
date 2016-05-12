@@ -206,13 +206,9 @@ namespace DiffProcessor
             int threshold = ms;
             //count of notes in a section
             int notecounter = 0;
-            for(int i = 0; i < hitobjects.GetSize(); i++)
+            for(int i = 0; i < noteslist.Length; i++)
             {
-                //Skip sliders and spinners
-                if(hitobjects.GetHitObjectType(i) != HitObjectType.Circle)
-                    continue;
-
-                if(Convert.ToInt32(hitobjects.GetProperty(i, "time")) > threshold)
+                if(noteslist[i].Time > threshold)
                 {
                     nps.Add(notecounter);
                     notecounter = 0;
