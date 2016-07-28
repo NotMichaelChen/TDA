@@ -14,18 +14,9 @@ public static class Dewlib
         return arr;
     }
 
-    /// Reverses the given string
-    public static string ReverseString(string str)
-    {
-        if (str == null)
-            return null;
-
-       char[] array = str.ToCharArray();
-       Array.Reverse(array);
-       return new String(array);
-    }
-
     // Keeps the number in the range between lower and upper
+    // If the bounds are exceeded, then the number will loop back around. This makes
+    // it functionally different from clamp
     public static double RestrictRange(double num, double lower, double upper)
     {
         if(lower > upper)
@@ -55,20 +46,43 @@ public static class Dewlib
     {
         List<string> finalarr = new List<string>(arr);
 
-        finalarr.RemoveAll(isEmpty);
+        finalarr.RemoveAll(delegate(string str)
+        {
+            return str.Length == 0;
+        });
 
         return finalarr.ToArray();
     }
 
-    //Predicate method for RemoveEmptyEntries that determines if a string is empty
-    private static bool isEmpty(string str)
+    //Split string only at the first occurance of char
+    public static string[] SplitFirst(string s, char c)
     {
-        return str.Length == 0;
+        int splitindex;
+        for(splitindex = 0; splitindex < s.Length; splitindex++)
+        {
+            if(s[splitindex] == c)
+            {
+                string[] split = new string[2];
+                //Don't want to include the splitting character, don't do splitindex+1
+                split[0] = s.Substring(0, splitindex);
+                //Ok to do +1 here, substring will just return an empty string if splitindex is the last valid char
+                split[1] = s.Substring(splitindex+1);
+
+                return split;
+            }
+        }
+
+        //splitting character was not found, so just return the string given
+        return new string[] {s};
     }
 
-    //Calculates the distance between two points
-    public static double GetDistance(double a, double b, double x, double y)
+    //Makes sure that val lies between max and min. If it’s greater than man, then it’s replaced by max, etc.
+    //Different from RestrictRange as val does not loop around
+    //Copied from http://stackoverflow.com/questions/2683442/where-can-i-find-the-clamp-function-in-net
+    public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
     {
-        return Math.Sqrt(Math.Pow(x - a, 2) + Math.Pow(y - b, 2));
+        if (val.CompareTo(min) < 0) return min;
+        else if(val.CompareTo(max) > 0) return max;
+        else return val;
     }
 }

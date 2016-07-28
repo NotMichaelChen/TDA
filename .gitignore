@@ -1,7 +1,10 @@
 # My Files
-c.bat
-testmaps/
-TDA.exe
+Test Suite/
+Properties/
+app.config
+bin/
+*.csproj
+obj/
 
 # Windows image file caches
 Thumbs.db

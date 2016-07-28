@@ -43,7 +43,7 @@ namespace DiffProcessor
         	}
 
     	return
-            Dewlib.RestrictRange((double)(amount100 * 150 + amount300 * 300)
+            Dewlib.Clamp((double)(amount100 * 150 + amount300 * 300)
                                 / (TotalHits() * 300), 0, 1);
         }
 
@@ -156,7 +156,7 @@ namespace DiffProcessor
             else if(((int)mods & (int)Modifiers.Easy) > 0)
                 OD *= 0.5;
 
-            OD = Dewlib.RestrictRange(OD, 0, 10);
+            OD = Dewlib.Clamp(OD, 0, 10);
 
             //Calculate the integer part of OD first, then modify later based on the decimal
             double window = 49.5 - 3 * Math.Floor(OD);
