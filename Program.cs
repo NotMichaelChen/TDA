@@ -2,7 +2,7 @@ using System;
 using System.Diagnostics;
 
 using BeatmapInfo;
-using DiffProcessor;
+using PerformanceProcessor;
 
 public class Program
 {

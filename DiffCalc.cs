@@ -1,6 +1,6 @@
 using System;
 
-using DiffProcessor;
+using PerformanceProcessor;
 using BeatmapInfo;
 using HitObjectInterpreter;
 

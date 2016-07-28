@@ -1,6 +1,6 @@
 using System;
 
-namespace DiffProcessor
+namespace PerformanceProcessor
 {
     //Copied from https://github.com/ppy/osu-performance
     public enum Modifiers
