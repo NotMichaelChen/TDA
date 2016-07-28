@@ -14,6 +14,7 @@ namespace PerformanceProcessor
         private int maxCombo, amount300, amount100, amountMiss;
         private double totalvalue, strainvalue, accvalue;
         private Beatmap map;
+        private StarRatingCalculator starcalc;
 
         public TaikoCalc(int maxCombo, int amount300, int amount100, int amountMiss, Modifiers mods, Beatmap map)
         {
@@ -23,6 +24,8 @@ namespace PerformanceProcessor
             this.amountMiss = amountMiss;
             this.mods = mods;
             this.map = map;
+
+            starcalc = new StarRatingCalculator(map, mods);
 
             ComputeStrainValue();
             ComputeAccValue();
@@ -95,7 +98,7 @@ namespace PerformanceProcessor
 
         private void ComputeStrainValue()
         {
-            strainvalue = Math.Pow(5.0 * Math.Max(1, GetNPT(500) / 0.0075) - 4.0, 2.0) / 100000.0;
+            strainvalue = Math.Pow(5.0 * Math.Max(1, starcalc.GetStars() / 0.0075) - 4.0, 2.0) / 100000.0;
 
             double lengthBonus = 1 + 0.1 * Math.Min(1.0, (double)(TotalHits()) / 1500);
             strainvalue *= lengthBonus;
@@ -181,83 +184,6 @@ namespace PerformanceProcessor
                 window /= 0.75;
 
             return window;
-        }
-
-        //NPHS = Notes Per Time (ms)
-        private double GetNPT(int ms)
-        {
-            Note[] noteslist = GetAllNotes();
-
-            //Shift the notes around if DT or HT are active
-            if(((int)mods & (int)Modifiers.DoubleTime) > 0 || ((int)mods & (int)Modifiers.Nightcore) > 0)
-            {
-                foreach(Note i in noteslist)
-                    i.Time = (int)(i.Time / 1.5);
-            }
-            else if(((int)mods & (int)Modifiers.HalfTime) > 0)
-            {
-                foreach(Note i in noteslist)
-                    i.Time = (int)(i.Time / 0.75);
-            }
-
-            //Notes Per Section (not seconds)
-            List<int> nps = new List<int>();
-
-            int threshold = ms;
-            //count of notes in a section
-            int notecounter = 0;
-            for(int i = 0; i < noteslist.Length; i++)
-            {
-                if(noteslist[i].Time > threshold)
-                {
-                    nps.Add(notecounter);
-                    notecounter = 0;
-                    //Move forward one section
-                    threshold += ms;
-                }
-                else
-                    notecounter++;
-            }
-            //Account for leftover notes
-            if(notecounter > 0)
-                nps.Add(notecounter);
-
-            nps.Sort();
-
-            //Allows a selection of a top percentile of note densities eg. choose top 10%, top 50%,
-            //or choose all 100%
-            double percentile = 1;
-            int percentilecount = (int)(nps.Count * percentile);
-
-            double sum = 0;
-            for(int i = nps.Count - 1; i >= nps.Count-percentilecount; i--)
-            {
-                sum += nps[i];
-            }
-
-            return sum/percentilecount;
-        }
-
-        //Gets a list of notes to be used when calculating NPT
-        private Note[] GetAllNotes()
-        {
-            HitObjectListParser hitobjects = new HitObjectListParser(map);
-            List<Note> notes = new List<Note>();
-
-            for(int i = 0; i < hitobjects.GetSize(); i++)
-            {
-                //Only consider circles
-                if(hitobjects.GetHitObjectType(i) == HitObjectType.Circle)
-                {
-                    string hitsound = hitobjects.GetProperty(i, "hitsound");
-                    int time = Convert.ToInt32(hitobjects.GetProperty(i, "time"));
-
-                    Note current = new Note(hitsound, time);
-                    notes.Add(current);
-                }
-            }
-
-            return notes.ToArray();
         }
     }
 }
