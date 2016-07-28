@@ -12,13 +12,17 @@ public class DiffCalc
 
     public DiffCalc(string[] args)
     {
+        //Format the command line arguments into a string array
+        //array order is {filepath, amount100, amountmiss, maxcombo, mods}
         string[] rawargs = ProcessArguments(args);
 
         map = new Beatmap(rawargs[0]);
+
         int amount300, amount100, amountmiss, maxcombo;
         string modlist;
-        int totalobjects = GetNoteCount(map);
+        int totalobjects = GetNoteCount();
 
+        //Put the arguments into the correct-type variables
         if(rawargs[1] == "")
             amount100 = 0;
         else
@@ -44,6 +48,7 @@ public class DiffCalc
         if(amount300 < 0)
             throw new Exception("Error, Invalid number of 100s or misses");
 
+        //Get the mods used in the play
         Modifiers usedmods = ConstructMods(modlist);
 
         processor = new TaikoCalc(maxcombo, amount300, amount100, amountmiss, usedmods, map);
@@ -53,17 +58,17 @@ public class DiffCalc
     public void PrintStats()
     {
         Console.WriteLine(map.GetTag("Metadata", "Title") + ", " + map.GetTag("Metadata", "Version"));
-        Console.WriteLine("Difficulty: " + GetDifficulty());
+        Console.WriteLine("PP: " + GetPP());
     }
 
-    //Gets the difficulty of the beatmap given the play stats
-    public double GetDifficulty()
+    //Gets the PP of the beatmap given the play stats
+    public double GetPP()
     {
         return processor.GetTotalValue();
     }
 
     //Gets the number of circles (only important note) in the beatmap
-    private int GetNoteCount(Beatmap map)
+    private int GetNoteCount()
     {
         HitObjectListParser hitobjects = new HitObjectListParser(map);
 

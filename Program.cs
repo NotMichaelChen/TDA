@@ -17,8 +17,10 @@ public class Program
             Console.WriteLine("  -m misses \t The number of misses, default 0");
             Console.WriteLine("  -c maxcombo \t Max combo achieved, default TotalNotes-misses");
             Console.WriteLine("  -M mods \t Mods used during the play, default none");
-            Console.WriteLine("\t\t Valid mod ids are nf, ez, hd, hr, dt, ht, nc, fl");
-            Console.WriteLine("\t\t Mods may appear in any order, case-insensitive");
+            Console.WriteLine("\t\t Valid mod IDs are nf, ez, hd, hr, dt, ht, nc, fl");
+            Console.WriteLine("\t\t Mods may appear in any order, case-insensitive, with no spaces");
+            Console.WriteLine("\t\t Ex: hdhrdt");
+            Console.WriteLine("\nOptions may appear in any order");
         }
         //Otherwise try to run the program, and catch and display any exceptions that arise
         else
