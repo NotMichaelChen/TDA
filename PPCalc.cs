@@ -5,12 +5,12 @@ using BeatmapInfo;
 using HitObjectInterpreter;
 
 //Acts as the bridge between the user input (in the form of command-line arguments) and TaikoCalc
-public class DiffCalc
+public class PPCalc
 {
     private TaikoCalc processor;
     private Beatmap map;
 
-    public DiffCalc(string[] args)
+    public PPCalc(string[] args)
     {
         //Format the command line arguments into a string array
         //array order is {filepath, amount100, amountmiss, maxcombo, mods}

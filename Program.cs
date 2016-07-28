@@ -27,7 +27,7 @@ public class Program
         {
             try
             {
-                DiffCalc calculator = new DiffCalc(args);
+                PPCalc calculator = new PPCalc(args);
                 calculator.PrintStats();
             }
             catch(Exception e)
