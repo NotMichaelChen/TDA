@@ -25,9 +25,9 @@ namespace DiffProcessor
             this.map = map;
 
             ComputeStrainValue();
-        	ComputeAccValue();
+            ComputeAccValue();
 
-        	ComputeTotalValue();
+            ComputeTotalValue();
         }
 
         public double GetTotalValue()
@@ -38,16 +38,16 @@ namespace DiffProcessor
         public double Accuracy()
         {
             if(TotalHits() == 0)
-        	{
-        		return 0;
-        	}
+            {
+                return 0;
+            }
 
-    	return
+        return
             Dewlib.Clamp((double)(amount100 * 150 + amount300 * 300)
                                 / (TotalHits() * 300), 0, 1);
         }
 
-	    public int TotalHits()
+        public int TotalHits()
         {
             return amount300 + amount100 + amountMiss;
         }
@@ -60,32 +60,32 @@ namespace DiffProcessor
         private void ComputeTotalValue()
         {
             // Don't count scores made with supposedly unranked mods
-        	if(((int)mods & (int)Modifiers.Relax) > 0 ||
-        	   ((int)mods & (int)Modifiers.Relax2) > 0 ||
-        	   ((int)mods & (int)Modifiers.Autoplay) > 0)
-        	{
-        		totalvalue = 0;
-        		return;
-        	}
+            if(((int)mods & (int)Modifiers.Relax) > 0 ||
+               ((int)mods & (int)Modifiers.Relax2) > 0 ||
+               ((int)mods & (int)Modifiers.Autoplay) > 0)
+            {
+                totalvalue = 0;
+                return;
+            }
 
             // Custom multipliers for NoFail and SpunOut.
-        	double multiplier = 1.1; // This is being adjusted to keep the final pp value scaled around what it used to be when changing things
+            double multiplier = 1.1; // This is being adjusted to keep the final pp value scaled around what it used to be when changing things
 
-        	if(((int)mods & (int)Modifiers.NoFail) > 0)
-        	{
-        		multiplier *= 0.90;
-        	}
+            if(((int)mods & (int)Modifiers.NoFail) > 0)
+            {
+                multiplier *= 0.90;
+            }
 
             //Not sure why this is here
-        	if(((int)mods & (int)Modifiers.SpunOut) > 0)
-        	{
-        		multiplier *= 0.95;
-        	}
+            if(((int)mods & (int)Modifiers.SpunOut) > 0)
+            {
+                multiplier *= 0.95;
+            }
 
-        	if(((int)mods & (int)Modifiers.Hidden) > 0)
-        	{
-        		multiplier *= 1.10;
-        	}
+            if(((int)mods & (int)Modifiers.Hidden) > 0)
+            {
+                multiplier *= 1.10;
+            }
 
             totalvalue = Math.Pow(
                             Math.Pow(strainvalue, 1.1) + Math.Pow(accvalue, 1.1),
@@ -111,32 +111,32 @@ namespace DiffProcessor
                 strainvalue *= Math.Min(Math.Pow(maxCombo, 0.5) / Math.Pow(mapMaxCombo, 0.5), 1.0);
             }
 
-        	if(((int)mods & (int)Modifiers.Hidden) > 0)
-        	{
-        		strainvalue *= 1.025;
-        	}
+            if(((int)mods & (int)Modifiers.Hidden) > 0)
+            {
+                strainvalue *= 1.025;
+            }
 
-        	if(((int)mods & (int)Modifiers.Flashlight) > 0)
-        	{
-        		// Apply length bonus again if flashlight is on simply because it becomes a lot harder on longer maps.
-        		strainvalue *= 1.05 * lengthBonus;
-        	}
+            if(((int)mods & (int)Modifiers.Flashlight) > 0)
+            {
+                // Apply length bonus again if flashlight is on simply because it becomes a lot harder on longer maps.
+                strainvalue *= 1.05 * lengthBonus;
+            }
 
-        	// Scale the speed value with accuracy _slightly_
-        	strainvalue *= Accuracy();
+            // Scale the speed value with accuracy _slightly_
+            strainvalue *= Accuracy();
         }
 
         private void ComputeAccValue()
         {
             double hitwindow300 = GetHitWindow300();
             if(hitwindow300 <= 0)
-        	{
-        		accvalue = 0;
-        		return;
-        	}
+            {
+                accvalue = 0;
+                return;
+            }
 
             // Lots of arbitrary values from testing.
-	        // Considering to use derivation from perfect accuracy in a probabilistic manner - assume normal distribution
+            // Considering to use derivation from perfect accuracy in a probabilistic manner - assume normal distribution
             accvalue = Math.Pow(150 / hitwindow300, 1.1) * Math.Pow(Accuracy(), 15) * 22.0;
 
             // Bonus for many hitcircles - it's harder to keep good accuracy up for longer
