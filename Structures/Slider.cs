@@ -108,7 +108,7 @@ namespace Structures
         //Calculates the Milliseconds per Beat at a specified time by searching
         //through the entire timing points section
         //Timing points inside sliders don't affect the slider itself
-        protected double GetMpB()
+        public double GetMpB()
         {
             int ms = Int32.Parse(HitObjectParser.GetProperty(id, "time"));
             //Get all the timing sections of the beatmap
@@ -209,6 +209,12 @@ namespace Structures
                 tickcount--;
 
             return tickcount * sliderruns;
+        }
+
+        //How long the slider is in existance (without considering repeats)
+        public int GetSliderTime()
+        {
+            return Convert.ToInt32((Double.Parse(HitObjectParser.GetProperty(id, "pixellength")) / (this.GetSliderVelocity() * 100)) * GetMpB());
         }
 
         //Formats a string of control points into an array of points
