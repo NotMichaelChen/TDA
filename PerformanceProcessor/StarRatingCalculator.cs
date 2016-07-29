@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using CustomExceptions;
 using BeatmapInfo;
@@ -24,25 +25,14 @@ namespace PerformanceProcessor
                 throw new InvalidBeatmapException("Error: beatmap is not the correct mode (std or taiko)");
             }
 
-            GetNotes(map, mode);
+            //Must appear before GetNotes - required for GetNotes
             mods = gamemods;
+            GetNotes(map, mode);
         }
 
         //Temporary - just get top 10% note densities
         public double GetStars()
         {
-            //Shift the notes around if DT or HT are active
-            if(((int)mods & (int)Modifiers.DoubleTime) > 0 || ((int)mods & (int)Modifiers.Nightcore) > 0)
-            {
-                foreach(Note i in noteslist)
-                    i.Time = (int)(i.Time / 1.5);
-            }
-            else if(((int)mods & (int)Modifiers.HalfTime) > 0)
-            {
-                foreach(Note i in noteslist)
-                    i.Time = (int)(i.Time / 0.75);
-            }
-
             //Notes Per Section (not seconds)
             List<int> nps = new List<int>();
 
@@ -79,6 +69,19 @@ namespace PerformanceProcessor
             }
 
             return sum/percentilecount;
+        }
+
+        private double GetDensity(int index, int count)
+        {
+            int notecount = 0;
+            double notetimesum = 0;
+            for(int i = index; i > 0 && notecount < count; i--)
+            {
+                notecount++;
+                notetimesum += noteslist[i].Time - noteslist[i-1].Time;
+            }
+
+            return notecount / notetimesum * 100;
         }
 
         //Gets a list of all of the notes in the beatmap
@@ -145,6 +148,22 @@ namespace PerformanceProcessor
                         }
                     }
                 }
+            }
+
+            //Remove duplicates
+            notes = notes.GroupBy(i => i.Time).Select(g => g.First()).ToList();
+
+            //Shift the notes around if DT or HT are active
+            //Make sure that mods is assigned before this method is used
+            if(((int)mods & (int)Modifiers.DoubleTime) > 0 || ((int)mods & (int)Modifiers.Nightcore) > 0)
+            {
+                foreach(Note i in noteslist)
+                    i.Time = (int)(i.Time / 1.5);
+            }
+            else if(((int)mods & (int)Modifiers.HalfTime) > 0)
+            {
+                foreach(Note i in noteslist)
+                    i.Time = (int)(i.Time / 0.75);
             }
 
             noteslist = notes.ToArray();
