@@ -148,8 +148,6 @@ namespace PerformanceProcessor
             }
 
             noteslist = notes.ToArray();
-            foreach(Note n in noteslist)
-                Console.WriteLine(n.Time);
         }
     }
 }
