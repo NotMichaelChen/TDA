@@ -51,11 +51,6 @@ namespace HuffmanEncoding
             //Create a table to return
             List<Node> table = new List<Node>();
 
-            //TODO: Update this comment
-            //Create a nodecomparer class which will hold each individual character
-            //Its predicate method is then used to determine if a character is already represented
-            //as a node
-            NodeComparer comparer;
             foreach(char i in text)
             {
                 int index = IsCharIn(table, i);

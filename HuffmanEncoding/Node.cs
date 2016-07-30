@@ -40,19 +40,4 @@ namespace HuffmanEncoding
             return freq - comparer.Frequency;
         }
     }
-
-    public class NodeComparer
-    {
-        char data;
-
-        public NodeComparer(char adata)
-        {
-            data = adata;
-        }
-
-        public bool NodeEquals(Node comparer)
-        {
-            return comparer.Data == data;
-        }
-    }
 }
