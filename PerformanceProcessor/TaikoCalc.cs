@@ -33,9 +33,14 @@ namespace PerformanceProcessor
             ComputeTotalValue();
         }
 
-        public double GetTotalValue()
+        public double GetPP()
         {
             return totalvalue;
+        }
+
+        public double GetSR()
+        {
+            return starcalc.GetStars();
         }
 
         public double Accuracy()
@@ -45,8 +50,8 @@ namespace PerformanceProcessor
                 return 0;
             }
 
-        return
-            Dewlib.Clamp((double)(amount100 * 150 + amount300 * 300)
+            return
+                Dewlib.Clamp((double)(amount100 * 150 + amount300 * 300)
                                 / (TotalHits() * 300), 0, 1);
         }
 

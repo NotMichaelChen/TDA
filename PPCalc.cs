@@ -58,13 +58,8 @@ public class PPCalc
     public void PrintStats()
     {
         Console.WriteLine(map.GetTag("Metadata", "Title") + ", " + map.GetTag("Metadata", "Version"));
-        Console.WriteLine("PP: " + GetPP());
-    }
-
-    //Gets the PP of the beatmap given the play stats
-    public double GetPP()
-    {
-        return processor.GetTotalValue();
+        Console.WriteLine("Star Rating: " + processor.GetSR() + "*");
+        Console.WriteLine("PP: " + processor.GetPP());
     }
 
     //Gets the number of circles (only important note) in the beatmap
