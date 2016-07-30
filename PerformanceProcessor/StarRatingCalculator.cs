@@ -79,7 +79,19 @@ namespace PerformanceProcessor
             //Since we added backwards, we need to flip the string
             string pattern = Dewlib.ReverseString(reversepattern.ToString());
 
-            return (pattern.Length+1) / (Huffman.HuffEncode(pattern).Length+1);
+            //This will represent the pattern as a string of ascii characters
+            StringBuilder charpattern = new StringBuilder();
+
+            const int bitlength = 2;
+            for(int i = 0; i < pattern.Length; i += bitlength)
+            {
+                if(pattern.Length - i < bitlength)
+                    charpattern.Append(Dewlib.BinToChar(pattern.Substring(i)));
+                else
+                    charpattern.Append(Dewlib.BinToChar(pattern.Substring(i, bitlength)));
+            }
+
+            return (pattern.Length+1) / (Huffman.HuffEncode(charpattern.ToString()).Length+1);
         }
 
         //Gets a list of all of the notes in the beatmap

@@ -115,4 +115,21 @@ public static class Dewlib
         else if(val.CompareTo(max) > 0) return max;
         else return val;
     }
+
+    // Takes a binary string and converts it into a character
+    // Converts based on a 0-25 range (0=a, 1=b, 2=c...)
+    // If the binary number is out of range, then the letter 'z' is returned
+    public static char BinToChar(string num)
+    {
+        //TODO: do conversion in the binarystring class
+        int total = 0;
+        for(int i = 0; i < num.Length; i++)
+        {
+            if(num[i] == '1')
+                total += Convert.ToInt32(Math.Pow(2.0, (i)));
+        }
+        if(total > 25)
+            return 'z';
+        return Convert.ToChar(total + 97);
+    }
 }
