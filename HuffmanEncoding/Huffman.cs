@@ -12,6 +12,9 @@ namespace HuffmanEncoding
         //that can be implemented if necessary
         public static string HuffEncode(string text)
         {
+            if(text.Length <= 1)
+                return text;
+
             //Make a list to hold nodes of each char and their frequency
             List<Node> datatable = new List<Node>();
 

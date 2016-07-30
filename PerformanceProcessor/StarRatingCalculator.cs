@@ -32,45 +32,19 @@ namespace PerformanceProcessor
             GetNotes(map, mode);
         }
 
-        //Temporary - just get top 10% note densities
         public double GetStars()
         {
-            //Notes Per Section (not seconds)
-            List<int> nps = new List<int>();
+            List<double> difflist = new List<double>();
 
-            int threshold = 500;
-            //count of notes in a section
-            int notecounter = 0;
             for(int i = 0; i < noteslist.Length; i++)
             {
-                if(noteslist[i].Time > threshold)
-                {
-                    nps.Add(notecounter);
-                    notecounter = 0;
-                    //Move forward one section
-                    threshold += 500;
-                }
-                else
-                    notecounter++;
-            }
-            //Account for leftover notes
-            if(notecounter > 0)
-                nps.Add(notecounter);
+                double density = GetDensity(i, 10);
+                double complexity = GetComplexity(i, 10);
 
-            nps.Sort();
-
-            //Allows a selection of a top percentile of note densities eg. choose top 10%, top 50%,
-            //or choose all 100%
-            double percentile = 0.1;
-            int percentilecount = (int)(nps.Count * percentile);
-
-            double sum = 0;
-            for(int i = nps.Count - 1; i >= nps.Count-percentilecount; i--)
-            {
-                sum += nps[i];
+                difflist.Add(density * complexity);
             }
 
-            return sum/percentilecount;
+            return Dewlib.SumScaledList(difflist.ToArray(), 0.95);
         }
 
         private double GetDensity(int index, int count)
@@ -83,14 +57,17 @@ namespace PerformanceProcessor
                 notetimesum += noteslist[i].Time - noteslist[i-1].Time;
             }
 
-            return notecount / notetimesum * 100;
+            if(notecount == 0)
+                return 0;
+            else
+                return notecount / notetimesum * 100;
         }
 
         private double GetComplexity(int index, int count)
         {
             StringBuilder reversepattern = new StringBuilder();
 
-            for(int i = index; i > 0 && reversepattern.Length < count; i--)
+            for(int i = index; i >= 0 && reversepattern.Length < count; i--)
             {
                 //0 = Don, 1 = Kat
                 if(noteslist[i].Type == NoteType.Don)
@@ -102,7 +79,7 @@ namespace PerformanceProcessor
             //Since we added backwards, we need to flip the string
             string pattern = Dewlib.ReverseString(reversepattern.ToString());
 
-            return Huffman.HuffEncode(pattern).Length;
+            return (pattern.Length+1) / (Huffman.HuffEncode(pattern).Length+1);
         }
 
         //Gets a list of all of the notes in the beatmap

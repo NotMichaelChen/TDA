@@ -65,6 +65,25 @@ public static class Dewlib
         return finalarr.ToArray();
     }
 
+    //Sum a list of numbers with a given weight
+    //The list is first sorted greatest to least, then each item is added after being
+    //multiplied by weight^i
+    public static double SumScaledList(double[] items, double weight)
+    {   
+        if(weight < 0 || weight > 1)
+            throw new ArgumentOutOfRangeException("Error, weight is out of bounds\n" +
+                                                  "weight=" + weight);
+        Array.Sort(items);
+        //to make the list greatest to least
+        Array.Reverse(items);
+
+        double sum = 0;
+        for(int i = 0; i < items.Length; i++)
+            sum += items[i] * Math.Pow(weight, i);
+
+        return sum;
+    }
+
     //Split string only at the first occurance of char
     public static string[] SplitFirst(string s, char c)
     {
