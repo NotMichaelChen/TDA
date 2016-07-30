@@ -14,6 +14,17 @@ public static class Dewlib
         return arr;
     }
 
+    /// Reverses the given string
+    public static string ReverseString(string str)
+    {
+        if (str == null)
+            return null;
+
+        char[] array = str.ToCharArray();
+        Array.Reverse(array);
+        return new String(array);
+    }
+
     // Keeps the number in the range between lower and upper
     // If the bounds are exceeded, then the number will loop back around. This makes
     // it functionally different from clamp

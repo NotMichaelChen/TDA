@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 using CustomExceptions;
 using BeatmapInfo;
 using HitObjectInterpreter;
 using Structures;
+using HuffmanEncoding;
 
 namespace PerformanceProcessor
 {
@@ -82,6 +84,25 @@ namespace PerformanceProcessor
             }
 
             return notecount / notetimesum * 100;
+        }
+
+        private double GetComplexity(int index, int count)
+        {
+            StringBuilder reversepattern = new StringBuilder();
+
+            for(int i = index; i > 0 && reversepattern.Length < count; i--)
+            {
+                //0 = Don, 1 = Kat
+                if(noteslist[i].Type == NoteType.Don)
+                    reversepattern.Append("0");
+                else
+                    reversepattern.Append("1");
+            }
+
+            //Since we added backwards, we need to flip the string
+            string pattern = Dewlib.ReverseString(reversepattern.ToString());
+
+            return Huffman.HuffEncode(pattern).Length;
         }
 
         //Gets a list of all of the notes in the beatmap
