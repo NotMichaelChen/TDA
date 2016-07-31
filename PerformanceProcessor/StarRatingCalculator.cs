@@ -165,6 +165,8 @@ namespace PerformanceProcessor
             //Remove duplicates
             notes = notes.GroupBy(i => i.Time).Select(g => g.First()).ToList();
 
+            noteslist = notes.ToArray();
+
             //Shift the notes around if DT or HT are active
             //Make sure that mods is assigned before this method is used
             if(((int)mods & (int)Modifiers.DoubleTime) > 0 || ((int)mods & (int)Modifiers.Nightcore) > 0)
@@ -177,8 +179,6 @@ namespace PerformanceProcessor
                 foreach(Note i in noteslist)
                     i.Time = (int)(i.Time / 0.75);
             }
-
-            noteslist = notes.ToArray();
         }
     }
 }
