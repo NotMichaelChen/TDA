@@ -44,7 +44,9 @@ namespace PerformanceProcessor
                 difflist.Add(density * complexity);
             }
 
-            return Dewlib.SumScaledList(difflist.ToArray(), 0.95);
+            double difficultyrating = Dewlib.SumScaledList(difflist.ToArray(), 0.95);
+
+            return 0.187 * difficultyrating + 0.582;
         }
 
         private double GetDensity(int index, int count)
@@ -91,7 +93,7 @@ namespace PerformanceProcessor
                     charpattern.Append(Dewlib.BinToChar(pattern.Substring(i, bitlength)));
             }
 
-            return (pattern.Length+1) / (Huffman.HuffEncode(charpattern.ToString()).Length+1);
+            return (double)(Huffman.HuffEncode(charpattern.ToString()).Length+1) / (pattern.Length+1);
         }
 
         //Gets a list of all of the notes in the beatmap
