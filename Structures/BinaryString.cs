@@ -6,10 +6,14 @@ namespace Structures
     /// <summary>
     /// Represents a number as a binary number as a string
     /// Allows individual bit extraction
+    /// Is immutable
     /// </summary>
     public class BinaryString
     {
+        //The binary representation of the number
         string binary;
+        //The integer representation of the number, so we don't have to recalculate it every time
+        int binnum;
 
         /// <summary>
         /// Converts an int into a binary number represented by a string
@@ -18,6 +22,8 @@ namespace Structures
         /// <returns></returns>
         public BinaryString(int num)
         {
+            binnum = num;
+
             if(num == 0)
             {
                 binary = "0";
@@ -51,10 +57,30 @@ namespace Structures
             binary = tempstring.ToString();
         }
 
+        // Takes a binary string and calculates the integer representation of the number
+        public BinaryString(string binarystring)
+        {
+            binary = binarystring;
+
+            int total = 0;
+            for(int i = 0; i < binarystring.Length; i++)
+            {
+                if(binarystring[i] == '1')
+                    total += Convert.ToInt32(Math.Pow(2.0, (i)));
+            }
+            binnum = total;
+        }
+
         //Get the entire binary number as a string
         public string GetBinary()
         {
             return binary;
+        }
+
+        //Gets the integer representation of the number
+        public int GetInteger()
+        {
+            return binnum;
         }
 
         /// <summary>

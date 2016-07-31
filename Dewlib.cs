@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Structures;
+
 // Collection of useful static functions
 public static class Dewlib
 {
@@ -121,15 +123,13 @@ public static class Dewlib
     // If the binary number is out of range, then the letter 'z' is returned
     public static char BinToChar(string num)
     {
-        //TODO: do conversion in the binarystring class
-        int total = 0;
-        for(int i = 0; i < num.Length; i++)
-        {
-            if(num[i] == '1')
-                total += Convert.ToInt32(Math.Pow(2.0, (i)));
-        }
+        BinaryString binstr = new BinaryString(num);
+
+        int total = binstr.GetInteger();
+
         if(total > 25)
             return 'z';
+        
         return Convert.ToChar(total + 97);
     }
 }
