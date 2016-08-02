@@ -38,3 +38,25 @@ Density is simply the inverse of the average time between the last 10 notes.
 Complexity is how compressable the last 10 notes are. To calculate complexity, the program first represents the last 10 notes as a string of 0's and 1's (dons and kats), then runs this string through a Huffman Coding algorithm, and compares the length of the compressed string to the original string. The more the string can compress, the less complex the pattern is, and the smaller the complexity rating is. Similarly, the less the string can compress, the more complex the pattern is, and the larger the complexity rating is.
 
 The program then multiplies these two metrics together for each note, then sums each note with a reducing weight, similar to the way total pp is calculated. This difficulty factor is then linearly scaled to produce a star rating.
+
+## Building
+
+### With Visual Studio Installed
+
+From ["Command-line Building With csc.exe"](https://msdn.microsoft.com/en-us/library/78f4aasd.aspx):
+
+>You can invoke the C# compiler by typing the name of its executable file (csc.exe) at a command prompt.
+
+>If you use the Visual Studio Command Prompt window, all the necessary environment variables are set for you. In Windows 7, you can >access that window from the Start menu by opening the Microsoft Visual Studio Version\Visual Studio Tools folder. In Windows 8, the >Visual Studio Command Prompt is called the Developer Command Prompt for VS2012, and you can find it by searching from the Start >screen.
+
+Once you are in the correct command prompt, try typing in "csc" to check that you are able to use csc correctly. When you've confirmed that it works, navigate to the source directory and enter:
+
+    csc /recurse:*.cs /out:TDA.exe
+
+### Without Visual Studio Installed
+
+Grab the mono compiler from here: http://www.mono-project.com/download/
+
+Make sure that you can execute mcs from the console (type in 'mcs' into the console and see if it's recognized as a command). If not, you need to add the "bin" directory in your Mono installation folder to your path directory. Alternatively, you can use the "Open mono command prompt" app to open a command prompt with "mcs" already available. Once that's done, navigate to the source directory and enter:
+
+    mcs -recurse:*.cs -out:TDA.exe
