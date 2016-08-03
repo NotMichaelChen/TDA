@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 
 using BeatmapInfo;
 using HitObjectInterpreter;
@@ -42,7 +43,7 @@ namespace Structures
             //How long the slider is in existance (without considering repeats)
             //slidertime = (pixellength / (slidervelocity * 100)) * MillisecondsPerBeat
             //(Order of operations is important kids! Otherwise you end up with slidertimes of 5000000 :o)
-            int slidertime = Convert.ToInt32((Double.Parse(HitObjectParser.GetProperty(id, "pixellength")) / (this.GetSliderVelocity() * 100)) * MpB);
+            int slidertime = Convert.ToInt32((Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.GetSliderVelocity() * 100)) * MpB);
             //How long each tick is apart from each other
             //ticktime = MillisecondsPerBeat / tickrate
             int ticktime = Convert.ToInt32(MpB / Double.Parse(map.GetTag("difficulty", "slidertickrate")));
@@ -127,7 +128,7 @@ namespace Structures
                 if(Int32.Parse(attributes[0]) > ms)
                     break;
 
-                else if(Double.Parse(attributes[1]) > 0)
+                else if(Double.Parse(attributes[1], CultureInfo.InvariantCulture) > 0)
                     timingpoint = timings[i];
                 else
                     continue;
@@ -137,7 +138,7 @@ namespace Structures
                 throw new Exception("Error, no relevant timing point\nms=" + ms);
 
             string[] properties = timingpoint.Split(',');
-            return Double.Parse(properties[1]);
+            return Double.Parse(properties[1], CultureInfo.InvariantCulture);
         }
 
         //TODO: Throw error if somethings messed up with the timing section
@@ -148,7 +149,7 @@ namespace Structures
         {
             int ms = Int32.Parse(HitObjectParser.GetProperty(id, "time"));
             //Get the default slider velocity of the beatmap
-            double slidervelocity = Double.Parse(map.GetTag("Difficulty", "SliderMultiplier"));
+            double slidervelocity = Double.Parse(map.GetTag("Difficulty", "SliderMultiplier"), CultureInfo.InvariantCulture);
 
             //Get all the timing sections of the beatmap
             string[] timings = this.map.GetSection("TimingPoints");
@@ -179,12 +180,12 @@ namespace Structures
 
             string[] properties = timingpoint.Split(',');
             //If the offset is positive, then there is no slider multiplication
-            if(Double.Parse(properties[1]) > 0)
+            if(Double.Parse(properties[1], CultureInfo.InvariantCulture) > 0)
                 return slidervelocity;
             //Otherwise the slider multiplier is 100 / abs(offset)
             else
             {
-                double offset = Double.Parse(properties[1]);
+                double offset = Double.Parse(properties[1], CultureInfo.InvariantCulture);
                 return slidervelocity * (100 / Math.Abs(offset));
             }
         }
@@ -195,9 +196,9 @@ namespace Structures
         {
             double slidervelocity = this.GetSliderVelocity();
 
-            double tickrate = Double.Parse(map.GetTag("Difficulty", "SliderTickRate"));
+            double tickrate = Double.Parse(map.GetTag("Difficulty", "SliderTickRate"), CultureInfo.InvariantCulture);
             //Necessary to avoid cases where the pixellength is something like 105.000004005432
-            int length = Convert.ToInt32(Math.Floor(Double.Parse(HitObjectParser.GetProperty(id, "pixelLength"))));
+            int length = Convert.ToInt32(Math.Floor(Double.Parse(HitObjectParser.GetProperty(id, "pixelLength"), CultureInfo.InvariantCulture)));
 
             int sliderruns = Int32.Parse(HitObjectParser.GetProperty(id, "repeat"));
 
@@ -214,7 +215,7 @@ namespace Structures
         //How long the slider is in existance (without considering repeats)
         public int GetSliderTime()
         {
-            return Convert.ToInt32((Double.Parse(HitObjectParser.GetProperty(id, "pixellength")) / (this.GetSliderVelocity() * 100)) * GetMpB());
+            return Convert.ToInt32((Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.GetSliderVelocity() * 100)) * GetMpB());
         }
 
         //Formats a string of control points into an array of points
@@ -232,7 +233,7 @@ namespace Structures
             foreach(string point in sliderpoints)
             {
                 string[] pair = point.Split(':');
-                temppoints.Add(new Point(Double.Parse(pair[0]), Double.Parse(pair[1])));
+                temppoints.Add(new Point(Double.Parse(pair[0], CultureInfo.InvariantCulture), Double.Parse(pair[1], CultureInfo.InvariantCulture)));
             }
 
             //Return this list of points as an array

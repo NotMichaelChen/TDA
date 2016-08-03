@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
+using System.Globalization;
 
 using BeatmapInfo;
-using HitObjectInterpreter;
-using Structures;
 
 namespace PerformanceProcessor
 {
@@ -157,7 +155,7 @@ namespace PerformanceProcessor
             if(ODstr.Length > 3)
                 throw new Exception("Error, OD has more than one decimal place");
 
-            double OD = Convert.ToDouble(ODstr);
+            double OD = Double.Parse(ODstr, CultureInfo.InvariantCulture);
 
             if(((int)mods & (int)Modifiers.HardRock) > 0)
                 OD *= 1.4;

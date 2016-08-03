@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Globalization;
 
 using CustomExceptions;
 using BeatmapInfo;
 using HitObjectInterpreter;
 using Structures;
 using HuffmanEncoding;
+
 
 namespace PerformanceProcessor
 {
@@ -137,7 +139,7 @@ namespace PerformanceProcessor
                     else
                     {
                         int[] hittimes = tempslider.GetHitTimes();
-                        int ticktime = Convert.ToInt32(tempslider.GetMpB() / Double.Parse(map.GetTag("difficulty", "slidertickrate")));
+                        int ticktime = Convert.ToInt32(tempslider.GetMpB() / Double.Parse(map.GetTag("difficulty", "slidertickrate"), CultureInfo.InvariantCulture));
 
                         notes.Add(new Note(hitsound, hittimes[0]));
 
