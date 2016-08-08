@@ -1,8 +1,10 @@
 using System;
+using System.Globalization;
 
 using PerformanceProcessor;
 using BeatmapInfo;
 using HitObjectInterpreter;
+using Structures;
 
 //Acts as the bridge between the user input (in the form of command-line arguments) and TaikoCalc
 public class PPCalc
@@ -64,15 +66,57 @@ public class PPCalc
     }
 
     //Gets the number of circles (only important note) in the beatmap
+    //Modified algorithm from StarRatingCalculator.GetNotes()
     private int GetNoteCount()
     {
         HitObjectListParser hitobjects = new HitObjectListParser(map);
+        string mode = map.GetTag("general", "mode");
 
         int count = 0;
         for(int i = 0; i < hitobjects.GetSize(); i++)
         {
             if(hitobjects.GetHitObjectType(i) == HitObjectType.Circle)
                 count++;
+            else if(hitobjects.GetHitObjectType(i) == HitObjectType.Slider && mode == "0" || mode == null)
+            {
+                Slider tempslider = new Slider(hitobjects.GetHitObjectID(i), map);
+
+                //Slider is longer than 2 beats - becomes a taiko-slider
+                if(tempslider.GetSliderTime() * Int32.Parse(hitobjects.GetProperty(i, "repeat")) >= tempslider.GetMpB() * 2)
+                    continue;
+                //Slider has no ticks, use slider head and tail
+                else if(tempslider.GetTickCount() == 0)
+                {
+                    int[] hittimes = tempslider.GetHitTimes();
+                    count += hittimes.Length;
+                }
+                //Slider has ticks - only use slider tail if it lands on a tick
+                else
+                {
+                    int[] hittimes = tempslider.GetHitTimes();
+                    int ticktime = Convert.ToInt32(tempslider.GetMpB() / Double.Parse(map.GetTag("difficulty", "slidertickrate"), CultureInfo.InvariantCulture));
+
+                    count++;
+
+                    int j = 1;
+                    while(j < hittimes.Length)
+                    {
+                        if(hittimes[j] - hittimes[j-1] == ticktime)
+                            count++;
+                        else
+                        {
+                            //Skip the slider tail, add the slider tick, and increment past both the tick and tail
+                            //(which is done by the next j++)
+                            j++;
+                            if(j == hittimes.Length) break; //Bounds checking
+
+                            count++;
+                        }
+
+                        j++;
+                    }
+                }
+            }
         }
         return count;
     }
