@@ -34,7 +34,7 @@
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Entry" id="entry1">
+              <widget class="Gtk.Entry" id="entryFilePath">
                 <property name="MemberName" />
                 <property name="CanFocus">True</property>
                 <property name="IsEditable">True</property>
@@ -52,6 +52,7 @@
                 <property name="Type">TextOnly</property>
                 <property name="Label" translatable="yes">Get .osu file</property>
                 <property name="UseUnderline">True</property>
+                <signal name="Clicked" handler="OnButtonGetFileClicked" />
               </widget>
               <packing>
                 <property name="Position">1</property>

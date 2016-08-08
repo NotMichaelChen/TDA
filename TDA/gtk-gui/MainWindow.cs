@@ -9,7 +9,7 @@ public partial class MainWindow
 
 	private global::Gtk.HBox hbox1;
 
-	private global::Gtk.Entry entry1;
+	private global::Gtk.Entry entryFilePath;
 
 	private global::Gtk.Button buttonGetFile;
 
@@ -83,13 +83,13 @@ public partial class MainWindow
 		this.hbox1.Name = "hbox1";
 		this.hbox1.Spacing = 6;
 		// Container child hbox1.Gtk.Box+BoxChild
-		this.entry1 = new global::Gtk.Entry();
-		this.entry1.CanFocus = true;
-		this.entry1.Name = "entry1";
-		this.entry1.IsEditable = true;
-		this.entry1.InvisibleChar = '●';
-		this.hbox1.Add(this.entry1);
-		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.entry1]));
+		this.entryFilePath = new global::Gtk.Entry();
+		this.entryFilePath.CanFocus = true;
+		this.entryFilePath.Name = "entryFilePath";
+		this.entryFilePath.IsEditable = true;
+		this.entryFilePath.InvisibleChar = '●';
+		this.hbox1.Add(this.entryFilePath);
+		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.entryFilePath]));
 		w2.Position = 0;
 		// Container child hbox1.Gtk.Box+BoxChild
 		this.buttonGetFile = new global::Gtk.Button();
@@ -351,6 +351,7 @@ public partial class MainWindow
 		this.DefaultHeight = 385;
 		this.Show();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
+		this.buttonGetFile.Clicked += new global::System.EventHandler(this.OnButtonGetFileClicked);
 		this.buttonAbout.Clicked += new global::System.EventHandler(this.OnButtonAboutClicked);
 	}
 }
