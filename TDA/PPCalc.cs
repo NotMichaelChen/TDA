@@ -5,6 +5,7 @@ using PerformanceProcessor;
 using BeatmapInfo;
 using HitObjectInterpreter;
 using Structures;
+using CustomExceptions;
 
 //Acts as the bridge between the user input (in the form of command-line arguments) and TaikoCalc
 public class PPCalc
@@ -39,6 +40,7 @@ public class PPCalc
         if(number300 < 0)
             throw new Exception("Error, Invalid number of 100s or misses");
 
+        VerifyMods(modlist);
         processor = new TaikoCalc(numbercombo, number300, number100, numbermiss, modlist, map);
     }
 
@@ -63,6 +65,18 @@ public class PPCalc
         double totalNumber = numbermiss + number100 + number300;
 
         return (totalPoints / totalNumber) * 100;
+    }
+
+    private void VerifyMods(Modifiers modlist)
+    {
+        //Check for invalid mod combinations
+        if(
+            (((int)modlist & (int)Modifiers.DoubleTime) > 0 && ((int)modlist & (int)Modifiers.HalfTime) > 0) ||
+            (((int)modlist & (int)Modifiers.Easy) > 0 && ((int)modlist & (int)Modifiers.HardRock) > 0)
+          )
+        {
+            throw new InvalidModCombination("Invalid Combination of mods");
+        }
     }
 
     //Gets the number of circles (only important note) in the beatmap
