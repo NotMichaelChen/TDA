@@ -65,6 +65,14 @@ public partial class MainWindow : Gtk.Window
                 usedmods = (Modifiers)((int)usedmods | (int)Modifiers.Hidden);
             if(checkbuttonFlashlight.Active)
                 usedmods = (Modifiers)((int)usedmods | (int)Modifiers.Flashlight);
+
+            PPCalc calculator = new PPCalc(filepath, amount100, amountmiss, maxcombo, usedmods);
+
+            textviewOutput.Buffer.Text =
+                              calculator.GetTitle() + "\n" +
+                              "Accuracy: " + Math.Round(calculator.GetAccuracy(), 2) + "%\n" +
+                              "Star Rating: " + calculator.GetSR() + "\n" +
+                              "PP: " + calculator.GetPP() + "\n";
         }
         catch(Exception ex)
         {
