@@ -102,7 +102,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Entry" id="entry2">
+                  <widget class="Gtk.Entry" id="entryHundreds">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
@@ -151,6 +151,7 @@
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">Calculate</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonCalculateClicked" />
                   </widget>
                   <packing>
                     <property name="PackType">End</property>
@@ -161,7 +162,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Entry" id="entry4">
+                  <widget class="Gtk.Entry" id="entryMaxCombo">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
@@ -189,7 +190,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Entry" id="entry3">
+                  <widget class="Gtk.Entry" id="entryMisses">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
@@ -228,7 +229,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton1">
+                  <widget class="Gtk.CheckButton" id="checkbuttonEasy">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">Easy</property>
@@ -244,7 +245,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton2">
+                  <widget class="Gtk.CheckButton" id="checkbuttonNoFail">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">No Fail</property>
@@ -260,7 +261,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton7">
+                  <widget class="Gtk.CheckButton" id="checkbuttonFlashlight">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">Flashlight</property>
@@ -277,7 +278,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton6">
+                  <widget class="Gtk.CheckButton" id="checkbuttonHidden">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">Hidden</property>
@@ -294,7 +295,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton5">
+                  <widget class="Gtk.CheckButton" id="checkbuttonDoubleTime">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">Double Time/Nightcore</property>
@@ -311,7 +312,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton4">
+                  <widget class="Gtk.CheckButton" id="checkbuttonHardRock">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">Hard Rock</property>
@@ -328,7 +329,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.CheckButton" id="checkbutton3">
+                  <widget class="Gtk.CheckButton" id="checkbuttonHalfTime">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Label" translatable="yes">Half Time</property>
@@ -357,7 +358,7 @@
                 <property name="MemberName" />
                 <property name="ShadowType">In</property>
                 <child>
-                  <widget class="Gtk.TextView" id="textview1">
+                  <widget class="Gtk.TextView" id="textviewOutput">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>

@@ -2,6 +2,8 @@
 using System.Windows.Forms;
 using Gtk;
 
+using PerformanceProcessor;
+
 public partial class MainWindow : Gtk.Window
 {
     public MainWindow() : base(Gtk.WindowType.Toplevel)
@@ -37,5 +39,36 @@ public partial class MainWindow : Gtk.Window
                         "Discuss program results at https://osu.ppy.sh/forum/t/485330",
                         "About"
                        );
+    }
+
+    protected void OnButtonCalculateClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            string filepath = entryFilePath.Text;
+            string amount100 = entryHundreds.Text;
+            string amountmiss = entryMisses.Text;
+            string maxcombo = entryMaxCombo.Text;
+
+            Modifiers usedmods = Modifiers.None;
+            if(checkbuttonEasy.Active)
+                usedmods = (Modifiers)((int)usedmods | (int)Modifiers.Easy);
+            if(checkbuttonNoFail.Active)
+                usedmods = (Modifiers)((int)usedmods | (int)Modifiers.NoFail);
+            if(checkbuttonHalfTime.Active)
+                usedmods = (Modifiers)((int)usedmods | (int)Modifiers.HalfTime);
+            if(checkbuttonHardRock.Active)
+                usedmods = (Modifiers)((int)usedmods | (int)Modifiers.HardRock);
+            if(checkbuttonDoubleTime.Active)
+                usedmods = (Modifiers)((int)usedmods | (int)Modifiers.DoubleTime);
+            if(checkbuttonHidden.Active)
+                usedmods = (Modifiers)((int)usedmods | (int)Modifiers.Hidden);
+            if(checkbuttonFlashlight.Active)
+                usedmods = (Modifiers)((int)usedmods | (int)Modifiers.Flashlight);
+        }
+        catch(Exception ex)
+        {
+            textviewOutput.Buffer.Text = ex.Message;
+        }
     }
 }
