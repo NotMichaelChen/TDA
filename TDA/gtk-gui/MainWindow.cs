@@ -11,7 +11,7 @@ public partial class MainWindow
 
 	private global::Gtk.Entry entry1;
 
-	private global::Gtk.Button button1;
+	private global::Gtk.Button buttonGetFile;
 
 	private global::Gtk.HSeparator hseparator1;
 
@@ -25,9 +25,9 @@ public partial class MainWindow
 
 	private global::Gtk.Label label3;
 
-	private global::Gtk.Button button3;
+	private global::Gtk.Button buttonAbout;
 
-	private global::Gtk.Button button2;
+	private global::Gtk.Button buttonCalculate;
 
 	private global::Gtk.Entry entry4;
 
@@ -92,13 +92,13 @@ public partial class MainWindow
 		global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.entry1]));
 		w2.Position = 0;
 		// Container child hbox1.Gtk.Box+BoxChild
-		this.button1 = new global::Gtk.Button();
-		this.button1.CanFocus = true;
-		this.button1.Name = "button1";
-		this.button1.UseUnderline = true;
-		this.button1.Label = global::Mono.Unix.Catalog.GetString("Get .osu file");
-		this.hbox1.Add(this.button1);
-		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.button1]));
+		this.buttonGetFile = new global::Gtk.Button();
+		this.buttonGetFile.CanFocus = true;
+		this.buttonGetFile.Name = "buttonGetFile";
+		this.buttonGetFile.UseUnderline = true;
+		this.buttonGetFile.Label = global::Mono.Unix.Catalog.GetString("Get .osu file");
+		this.hbox1.Add(this.buttonGetFile);
+		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.buttonGetFile]));
 		w3.Position = 1;
 		w3.Expand = false;
 		w3.Fill = false;
@@ -154,25 +154,25 @@ public partial class MainWindow
 		w8.Expand = false;
 		w8.Fill = false;
 		// Container child vbox2.Gtk.Box+BoxChild
-		this.button3 = new global::Gtk.Button();
-		this.button3.CanFocus = true;
-		this.button3.Name = "button3";
-		this.button3.UseUnderline = true;
-		this.button3.Label = global::Mono.Unix.Catalog.GetString("About");
-		this.vbox2.Add(this.button3);
-		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.button3]));
+		this.buttonAbout = new global::Gtk.Button();
+		this.buttonAbout.CanFocus = true;
+		this.buttonAbout.Name = "buttonAbout";
+		this.buttonAbout.UseUnderline = true;
+		this.buttonAbout.Label = global::Mono.Unix.Catalog.GetString("About");
+		this.vbox2.Add(this.buttonAbout);
+		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.buttonAbout]));
 		w9.PackType = ((global::Gtk.PackType)(1));
 		w9.Position = 3;
 		w9.Expand = false;
 		w9.Fill = false;
 		// Container child vbox2.Gtk.Box+BoxChild
-		this.button2 = new global::Gtk.Button();
-		this.button2.CanFocus = true;
-		this.button2.Name = "button2";
-		this.button2.UseUnderline = true;
-		this.button2.Label = global::Mono.Unix.Catalog.GetString("Calculate");
-		this.vbox2.Add(this.button2);
-		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.button2]));
+		this.buttonCalculate = new global::Gtk.Button();
+		this.buttonCalculate.CanFocus = true;
+		this.buttonCalculate.Name = "buttonCalculate";
+		this.buttonCalculate.UseUnderline = true;
+		this.buttonCalculate.Label = global::Mono.Unix.Catalog.GetString("Calculate");
+		this.vbox2.Add(this.buttonCalculate);
+		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.buttonCalculate]));
 		w10.PackType = ((global::Gtk.PackType)(1));
 		w10.Position = 4;
 		w10.Expand = false;
@@ -351,5 +351,6 @@ public partial class MainWindow
 		this.DefaultHeight = 385;
 		this.Show();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
+		this.buttonAbout.Clicked += new global::System.EventHandler(this.OnButtonAboutClicked);
 	}
 }

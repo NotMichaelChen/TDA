@@ -46,7 +46,7 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.Button" id="button1">
+              <widget class="Gtk.Button" id="buttonGetFile">
                 <property name="MemberName">buttonGetFile</property>
                 <property name="CanFocus">True</property>
                 <property name="Type">TextOnly</property>
@@ -127,12 +127,13 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Button" id="button3">
-                    <property name="MemberName">buttonAbout</property>
+                  <widget class="Gtk.Button" id="buttonAbout">
+                    <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
                     <property name="Label" translatable="yes">About</property>
                     <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="OnButtonAboutClicked" />
                   </widget>
                   <packing>
                     <property name="PackType">End</property>
@@ -143,7 +144,7 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Button" id="button2">
+                  <widget class="Gtk.Button" id="buttonCalculate">
                     <property name="MemberName">buttonCalculate</property>
                     <property name="CanFocus">True</property>
                     <property name="Type">TextOnly</property>
