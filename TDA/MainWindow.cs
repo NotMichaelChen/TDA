@@ -37,12 +37,16 @@ public partial class MainWindow : Gtk.Window
 
     protected void OnButtonAboutClicked(object sender, EventArgs e)
     {
-        MessageBox.Show("Taiko Difficulty Analyzer v1.1\n" +
-                        "Created by dewero\n\n" +
-                        "Check for new releases at https://github.com/NotMichaelChen/TDA\n" +
-                        "Discuss program results at https://osu.ppy.sh/forum/t/485330",
-                        "About"
-                       );
+        AboutDialog about = new AboutDialog();
+        about.ProgramName = "Taiko Difficulty Analyzer";
+        about.Version = "1.1";
+        about.Authors = new string[] {"dewero <mzc12345@gmail.com>"};
+        about.Website = "https://github.com/NotMichaelChen/TDA";
+        about.Comments = "Discuss program results at: https://osu.ppy.sh/forum/t/485330\n\n" +
+            "Check for new releases at the link below:";
+
+        about.Run();
+        about.Destroy();
     }
 
     protected void OnButtonCalculateClicked(object sender, EventArgs e)
