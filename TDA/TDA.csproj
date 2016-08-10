@@ -82,6 +82,7 @@
     <Compile Include="Dewlib.cs" />
     <Compile Include="PPCalc.cs" />
     <Compile Include="CustomExceptions\InvalidModCombination.cs" />
+    <Compile Include="CustomExceptions\InvalidScore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

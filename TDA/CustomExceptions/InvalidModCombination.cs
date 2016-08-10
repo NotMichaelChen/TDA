@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace CustomExceptions
 {
-    /// Thrown when provided beatmap is invalid
+    /// Thrown when a given combination of mods is invalid
     public class InvalidModCombination : Exception, ISerializable
     {
         public InvalidModCombination()

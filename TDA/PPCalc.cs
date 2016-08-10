@@ -37,9 +37,8 @@ public class PPCalc
 
         //Infer the number of 300s from the amount of 100s and misses
         number300 = totalobjects - number100 - numbermiss;
-        if(number300 < 0)
-            throw new Exception("Error, Invalid number of 100s or misses");
 
+        VerifyNumbers(number300, number100, numbermiss, numbercombo);
         VerifyMods(modlist);
         processor = new TaikoCalc(numbercombo, number300, number100, numbermiss, modlist, map);
     }
@@ -65,6 +64,14 @@ public class PPCalc
         double totalNumber = numbermiss + number100 + number300;
 
         return (totalPoints / totalNumber) * 100;
+    }
+
+    private void VerifyNumbers(int amount300, int amount100, int amountmiss, int maxcombo)
+    {
+        if(amount300 < 0)
+            throw new InvalidScore("Invalid number of 100s and misses");
+        if(maxcombo > amount300 + amount100 + amountmiss)
+            throw new InvalidScore("Invalid max combo");
     }
 
     private void VerifyMods(Modifiers modlist)
