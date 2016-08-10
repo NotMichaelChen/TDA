@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows.Forms;
 using Gtk;
 
@@ -6,6 +8,8 @@ using PerformanceProcessor;
 
 public partial class MainWindow : Gtk.Window
 {
+    private bool isCalculating = false;
+
     public MainWindow() : base(Gtk.WindowType.Toplevel)
     {
         Build();
@@ -43,6 +47,18 @@ public partial class MainWindow : Gtk.Window
 
     protected void OnButtonCalculateClicked(object sender, EventArgs e)
     {
+        if(!isCalculating)
+        {
+            textviewOutput.Buffer.Text = "calculating...";
+            Thread calculationThread = new Thread(CalculatePP);
+            calculationThread.Start();
+        }
+    }
+
+    private void CalculatePP()
+    {
+        isCalculating = true;
+        string output;
         try
         {
             string filepath = entryFilePath.Text;
@@ -68,7 +84,7 @@ public partial class MainWindow : Gtk.Window
 
             PPCalc calculator = new PPCalc(filepath, amount100, amountmiss, maxcombo, usedmods);
 
-            textviewOutput.Buffer.Text =
+            output =
                               calculator.GetTitle() + "\n" +
                               "Accuracy: " + Math.Round(calculator.GetAccuracy(), 2) + "%\n" +
                               "Star Rating: " + calculator.GetSR() + "\n" +
@@ -76,7 +92,10 @@ public partial class MainWindow : Gtk.Window
         }
         catch(Exception ex)
         {
-            textviewOutput.Buffer.Text = ex.Message;
+            output = ex.Message;
         }
+
+        Gtk.Application.Invoke(delegate { textviewOutput.Buffer.Text = output; });
+        isCalculating = false;
     }
 }

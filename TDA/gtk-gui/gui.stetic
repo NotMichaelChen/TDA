@@ -7,7 +7,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/TDA.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="624 385">
+  <widget class="Gtk.Window" id="MainWindow" design-size="624 314">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Taiko Difficulty Analyzer</property>
     <property name="WindowPosition">CenterOnParent</property>
@@ -42,7 +42,7 @@
               </widget>
               <packing>
                 <property name="Position">0</property>
-                <property name="AutoSize">True</property>
+                <property name="AutoSize">False</property>
               </packing>
             </child>
             <child>
@@ -348,8 +348,7 @@
               </widget>
               <packing>
                 <property name="Position">1</property>
-                <property name="AutoSize">True</property>
-                <property name="Expand">False</property>
+                <property name="AutoSize">False</property>
                 <property name="Fill">False</property>
               </packing>
             </child>
@@ -363,6 +362,7 @@
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
                     <property name="Editable">False</property>
+                    <property name="Overwrite">True</property>
                     <property name="Text" translatable="yes" />
                     <property name="WrapMode">Char</property>
                   </widget>
