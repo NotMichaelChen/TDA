@@ -69,9 +69,14 @@ public class PPCalc
     private void VerifyNumbers(int amount300, int amount100, int amountmiss, int maxcombo)
     {
         if(amount300 < 0)
-            throw new InvalidScore("Invalid number of 100s and misses");
+            throw new InvalidScore("Invalid number of 100s and misses\n" +
+                                   "amount300=" + amount300);
         if(maxcombo > amount300 + amount100 + amountmiss)
-            throw new InvalidScore("Invalid max combo");
+        {
+            int totalcount = amount300 + amount100 + amountmiss;
+            throw new InvalidScore("Invalid max combo\n" +
+                                   "totalobjects=" + totalcount);
+        }
     }
 
     private void VerifyMods(Modifiers modlist)
