@@ -11,7 +11,11 @@ namespace Structures
     public class Slider
     {
         private string id;
+        private string timingsection;
         private Beatmap map;
+        //Slider properties
+        private double mpb;
+        private double sv;
         //Constructs a slider given an id
         //The beatmap given is the beatmap that the slider resides in
         //Used to make calculations related to timing
@@ -20,9 +24,24 @@ namespace Structures
             id = tempid;
             map = amap;
 
+            //We need the timing section before we get mpb and sv
+            timingsection = GetTimingSection();
+            mpb = Double.Parse(timingsection.Split(',')[1]);
+            sv = CalculateSliderVelocity();
+
             //Checks that the hitobject given is actually a slider
             if(HitObjectParser.GetHitObjectType(id) != HitObjectType.Slider)
                 throw new ArgumentException("Hitobject provided to slider class is not a slider");
+        }
+
+        public double MPB
+        {
+            get { return mpb; }
+        }
+
+        public double SliderVelocity
+        {
+            get { return sv; }
         }
 
         //Calculated the same regardless of slider type so can already be implemented
@@ -32,14 +51,13 @@ namespace Structures
 
             //When slider starts
             int starttime = Int32.Parse(HitObjectParser.GetProperty(id, "time"));
-            double MpB = this.GetMpB();
             //How long the slider is in existance (without considering repeats)
             //slidertime = (pixellength / (slidervelocity * 100)) * MillisecondsPerBeat
             //(Order of operations is important kids! Otherwise you end up with slidertimes of 5000000 :o)
-            int slidertime = Convert.ToInt32((Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.GetSliderVelocity() * 100)) * MpB);
+            int slidertime = Convert.ToInt32((Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.sv * 100)) * mpb);
             //How long each tick is apart from each other
             //ticktime = MillisecondsPerBeat / tickrate
-            int ticktime = Convert.ToInt32(MpB / Double.Parse(map.GetTag("difficulty", "slidertickrate")));
+            int ticktime = Convert.ToInt32(mpb / Double.Parse(map.GetTag("difficulty", "slidertickrate")));
             //How many times the slider runs
             int sliderruns = Int32.Parse(HitObjectParser.GetProperty(id, "repeat"));
             //How many ticks are in the slider (without repeats)
@@ -50,6 +68,13 @@ namespace Structures
             //The time from the last tick to the slider end
             //If there are no ticks, then this just become slidertime
             int sliderenddiff = (slidertime) - (tickcount * ticktime);
+
+            if(tickcount == 0)
+            {
+                times.Add(starttime);
+                times.Add(starttime + slidertime);
+                return times.ToArray();
+            }
 
             //Keeps track of what time we are at when travelling through the slider
             int currenttime = starttime;
@@ -99,51 +124,57 @@ namespace Structures
             return times.ToArray();
         }
 
-        //Calculates the Milliseconds per Beat at a specified time by searching
-        //through the entire timing points section
-        //Timing points inside sliders don't affect the slider itself
-        public double GetMpB()
+        //Gets the number of slider ticks, including slider repeats (but not slider ends)
+        //Calculated the same regardless of slider type
+        public int GetTickCount()
         {
-            int ms = Int32.Parse(HitObjectParser.GetProperty(id, "time"));
-            //Get all the timing sections of the beatmap
-            string[] timings = this.map.GetSection("TimingPoints");
-            //Just in case there is only one timing point
-            string timingpoint = timings[0];
+            double tickrate = Double.Parse(map.GetTag("Difficulty", "SliderTickRate"), CultureInfo.InvariantCulture);
+            //Necessary to avoid cases where the pixellength is something like 105.000004005432
+            int length = Convert.ToInt32(Math.Floor(Double.Parse(HitObjectParser.GetProperty(id, "pixelLength"), CultureInfo.InvariantCulture)));
 
-            //Find the section that applies to the given time
-            for(int i = 0; i < timings.Length; i++)
-            {
-                //Split the string by commas to get all the relevant times
-                string[] attributes = timings[i].Split(',');
-                //Trim each string just in case
-                attributes = Dewlib.TrimStringArray(attributes);
+            int sliderruns = Int32.Parse(HitObjectParser.GetProperty(id, "repeat"));
 
-                if(Int32.Parse(attributes[0]) > ms)
-                    break;
+            int ticklength = (int)Math.Round(this.sv * (100 / tickrate));
 
-                else if(Double.Parse(attributes[1], CultureInfo.InvariantCulture) > 0)
-                    timingpoint = timings[i];
-                else
-                    continue;
-            }
+            int tickcount = length / ticklength;
 
-            if(timingpoint == null)
-                throw new Exception("Error, no relevant timing point\nms=" + ms);
+            if(length % ticklength == 0)
+                tickcount--;
 
-            string[] properties = timingpoint.Split(',');
-            return Double.Parse(properties[1], CultureInfo.InvariantCulture);
+            return tickcount * sliderruns;
         }
 
-        //TODO: Throw error if somethings messed up with the timing section
+        //How long the slider is in existance (without considering repeats)
+        //Would like this to round to an int, but it's left without rounding to maintain compatibility with osu!
+        public double GetSliderTime()
+        {
+            return (Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.sv * 100)) * mpb;
+        }
+
         //Calculates the slider velocity at a specified time using the default
         //velocity and the relevant timing section
         //Timing points inside sliders don't affect the slider itself
-        public double GetSliderVelocity()
+        private double CalculateSliderVelocity()
         {
-            int ms = Int32.Parse(HitObjectParser.GetProperty(id, "time"));
-            //Get the default slider velocity of the beatmap
             double slidervelocity = Double.Parse(map.GetTag("Difficulty", "SliderMultiplier"), CultureInfo.InvariantCulture);
 
+            string[] properties = timingsection.Split(',');
+            //If the offset is positive, then there is no slider multiplication
+            if(Double.Parse(properties[1], CultureInfo.InvariantCulture) > 0)
+                return slidervelocity;
+            //Otherwise the slider multiplier is 100 / abs(offset)
+            else
+            {
+                double offset = Double.Parse(properties[1], CultureInfo.InvariantCulture);
+                return slidervelocity * (100 / Math.Abs(offset));
+            }
+        }
+
+        //Gets the timing section that applies to the slider
+        //Used in calculating SV and MPB
+        private string GetTimingSection()
+        {
+            int ms = Int32.Parse(HitObjectParser.GetProperty(id, "time"));
             //Get all the timing sections of the beatmap
             string[] timings = this.map.GetSection("TimingPoints");
             //Will hold the relevant timing point
@@ -171,45 +202,7 @@ namespace Structures
             if(timingpoint == null)
                 timingpoint = timings[timings.Length-1];
 
-            string[] properties = timingpoint.Split(',');
-            //If the offset is positive, then there is no slider multiplication
-            if(Double.Parse(properties[1], CultureInfo.InvariantCulture) > 0)
-                return slidervelocity;
-            //Otherwise the slider multiplier is 100 / abs(offset)
-            else
-            {
-                double offset = Double.Parse(properties[1], CultureInfo.InvariantCulture);
-                return slidervelocity * (100 / Math.Abs(offset));
-            }
-        }
-
-        //Gets the number of slider ticks, including slider repeats (but not slider ends)
-        //Calculated the same regardless of slider type
-        public int GetTickCount()
-        {
-            double slidervelocity = this.GetSliderVelocity();
-
-            double tickrate = Double.Parse(map.GetTag("Difficulty", "SliderTickRate"), CultureInfo.InvariantCulture);
-            //Necessary to avoid cases where the pixellength is something like 105.000004005432
-            int length = Convert.ToInt32(Math.Floor(Double.Parse(HitObjectParser.GetProperty(id, "pixelLength"), CultureInfo.InvariantCulture)));
-
-            int sliderruns = Int32.Parse(HitObjectParser.GetProperty(id, "repeat"));
-
-            int ticklength = (int)Math.Round(slidervelocity * (100 / tickrate));
-
-            int tickcount = length / ticklength;
-
-            if(length % ticklength == 0)
-                tickcount--;
-
-            return tickcount * sliderruns;
-        }
-
-        //How long the slider is in existance (without considering repeats)
-        //Would like this to round to an int, but it's left without rounding to maintain compatibility with osu!
-        public double GetSliderTime()
-        {
-            return (Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.GetSliderVelocity() * 100)) * GetMpB();
+            return timingpoint;
         }
     }
 }

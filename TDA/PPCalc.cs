@@ -108,7 +108,7 @@ public class PPCalc
                 Slider tempslider = new Slider(hitobjects.GetHitObjectID(i), map);
 
                 //Slider is longer than 2 beats - becomes a taiko-slider
-                if(tempslider.GetSliderTime() * Int32.Parse(hitobjects.GetProperty(i, "repeat")) >= tempslider.GetMpB() * 2)
+                if(tempslider.GetSliderTime() * Int32.Parse(hitobjects.GetProperty(i, "repeat")) >= tempslider.MPB * 2)
                     continue;
                 //Slider has no ticks, use slider head and tail
                 else if(tempslider.GetTickCount() == 0)
@@ -120,7 +120,7 @@ public class PPCalc
                 else
                 {
                     int[] hittimes = tempslider.GetHitTimes();
-                    int ticktime = Convert.ToInt32(tempslider.GetMpB() / Double.Parse(map.GetTag("difficulty", "slidertickrate"), CultureInfo.InvariantCulture));
+                    int ticktime = Convert.ToInt32(tempslider.MPB / Double.Parse(map.GetTag("difficulty", "slidertickrate"), CultureInfo.InvariantCulture));
 
                     count++;
 
