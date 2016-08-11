@@ -213,9 +213,10 @@ namespace Structures
         }
 
         //How long the slider is in existance (without considering repeats)
-        public int GetSliderTime()
+        //Would like this to round to an int, but it's left without rounding to maintain compatibility with osu!
+        public double GetSliderTime()
         {
-            return Convert.ToInt32((Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.GetSliderVelocity() * 100)) * GetMpB());
+            return (Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.GetSliderVelocity() * 100)) * GetMpB();
         }
 
         //Formats a string of control points into an array of points
