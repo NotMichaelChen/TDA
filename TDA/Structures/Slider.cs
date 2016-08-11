@@ -12,10 +12,6 @@ namespace Structures
     {
         private string id;
         private Beatmap map;
-        //List of control points of slider
-        //DOES NOT INCLUDE THE FIRST HIT POINT
-        private Point[] controlpoints;
-
         //Constructs a slider given an id
         //The beatmap given is the beatmap that the slider resides in
         //Used to make calculations related to timing
@@ -27,9 +23,6 @@ namespace Structures
             //Checks that the hitobject given is actually a slider
             if(HitObjectParser.GetHitObjectType(id) != HitObjectType.Slider)
                 throw new ArgumentException("Hitobject provided to slider class is not a slider");
-
-            //Gets the control points of the slider in a formatted array of Points
-            controlpoints = FormatControlPoints();
         }
 
         //Calculated the same regardless of slider type so can already be implemented
@@ -217,28 +210,6 @@ namespace Structures
         public double GetSliderTime()
         {
             return (Double.Parse(HitObjectParser.GetProperty(id, "pixellength"), CultureInfo.InvariantCulture) / (this.GetSliderVelocity() * 100)) * GetMpB();
-        }
-
-        //Formats a string of control points into an array of points
-        //Does NOT include the first hit point
-        private Point[] FormatControlPoints()
-        {
-            //Control point string will look like: B|380:120|332:96|332:96|304:124
-
-            //Gets a list of strings containing each control point by splitting up the control point string
-            string[] sliderpoints = HitObjectParser.GetProperty(id, "controlpoints").Split('|');
-
-            List<Point> temppoints = new List<Point>();
-
-            //Parse each point as a Point object
-            foreach(string point in sliderpoints)
-            {
-                string[] pair = point.Split(':');
-                temppoints.Add(new Point(Double.Parse(pair[0], CultureInfo.InvariantCulture), Double.Parse(pair[1], CultureInfo.InvariantCulture)));
-            }
-
-            //Return this list of points as an array
-            return temppoints.ToArray();
         }
     }
 }
