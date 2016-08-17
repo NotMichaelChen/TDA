@@ -38,7 +38,7 @@ public partial class MainWindow : Gtk.Window
     {
         AboutDialog about = new AboutDialog();
         about.ProgramName = "Taiko Difficulty Analyzer";
-        about.Version = "1.1";
+        about.Version = "2.0.0";
         about.Authors = new string[] {"dewero <mzc12345@gmail.com>"};
         about.Website = "https://github.com/NotMichaelChen/TDA";
         about.Comments = "Discuss program results at: https://osu.ppy.sh/forum/t/485330\n\n" +
