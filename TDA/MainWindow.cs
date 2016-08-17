@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
 using Gtk;
@@ -61,10 +60,8 @@ public partial class MainWindow : Gtk.Window
 
     private void CalculatePP()
     {
-        Stopwatch timer = new Stopwatch();
         isCalculating = true;
         string output;
-        timer.Start();
         try
         {
             string filepath = entryFilePath.Text;
@@ -100,8 +97,6 @@ public partial class MainWindow : Gtk.Window
         {
             output = ex.Message;
         }
-        timer.Stop();
-        output += "\n" + timer.ElapsedMilliseconds + " ms";
 
         Gtk.Application.Invoke(delegate { textviewOutput.Buffer.Text = output; });
         isCalculating = false;
