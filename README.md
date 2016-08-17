@@ -5,7 +5,7 @@ TDA stands for Taiko Difficulty Analyzer, and serves the purpose of calculating 
 
 [Go Here](https://github.com/NotMichaelChen/TDA/releases)
 
-Requires GTK# which you can get [here](http://download.mono-project.com/gtk-sharp/gtk-sharp-2.12.10.win32.msi)
+Requires GTK# which you can get [here (Windows)](http://download.mono-project.com/gtk-sharp/gtk-sharp-2.12.10.win32.msi) or [here (Mac OS X)](http://download.mono-project.com/archive/4.4.2/macos-10-universal/MonoFramework-MDK-4.4.2.11.macos10.xamarin.universal.pkg)
 
 ## Current Implementation
 As of now, the pp calculator is an exact copy of the current pp algorithm that calculates the pp for a given play. However, the star rating calculator is not currently public, so the one featured in this program is original. In this program, star rating is calculated using two metrics, density and complexity.
