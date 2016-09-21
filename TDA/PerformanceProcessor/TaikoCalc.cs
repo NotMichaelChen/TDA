@@ -164,22 +164,10 @@ namespace PerformanceProcessor
 
             OD = Dewlib.Clamp(OD, 0, 10);
 
-            //Calculate the integer part of OD first, then modify later based on the decimal
-            double window = 49.5 - 3 * Math.Floor(OD);
-
-            //If OD has a decimal place
-            if(OD % 1 != 0)
-            {
-                //Avoid precision bugs - round to one decimal place
-                double ODdecimal = Math.Round(OD - Math.Floor(OD), 1);
-
-                if(0.1 <= ODdecimal && ODdecimal <= 0.3)
-                    window -= 1;
-                else if(0.4 <= ODdecimal && ODdecimal <= 0.6)
-                    window -= 2;
-                else if(0.7 <= ODdecimal && ODdecimal <= 0.9)
-                    window -= 3;
-            }
+            //Algorithm from http://pp.mon.im/
+            int max = 20;
+            int min = 50;
+            double window = Math.Floor(min + (max - min) * OD / 10) - 0.5;
 
             if(((int)mods & (int)Modifiers.DoubleTime) > 0 || ((int)mods & (int)Modifiers.Nightcore) > 0)
                 window /= 1.5;
